@@ -1,0 +1,195 @@
+{
+  "name": "taller2_wikipedia",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "## Objetivo\nEres un asistente amable, tu nombre es Ana, ayudas a buscar información en Wikipedia.\n\n## Reglas\n- Devuelve siempre respuestas de dos párrafos o menos.\n- Siempre pon las referencias de los artículos que consultas en Wikipedia.\n\n## Tools\n- Tienes una \"tool\" para conectarte a Wikipedia y traer información, puedes usarla para confirmar la información"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -544,
+        -64
+      ],
+      "id": "29b41bd2-0214-4cec-88dc-967ba9bb2762",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -544,
+        144
+      ],
+      "id": "f5cbd4bf-2a29-4186-9966-f6af023cbec1",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -848,
+        144
+      ],
+      "id": "4f1b4b57-5c0b-4e93-930b-e42ed9e6e476",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "KtE1gcrXZZTSb57r",
+          "name": "Google Gemini(PaLM) Api account 5"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWikipedia",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        144
+      ],
+      "id": "9b29416e-6f9c-4a86-b6e9-ab849778a3f9",
+      "name": "Wikipedia",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -736,
+        -64
+      ],
+      "id": "9006bdcd-b993-49d6-a47c-2ff5912d475c",
+      "name": "When chat message received",
+      "webhookId": "2a2a7435-a2c1-4718-8e81-6e563529e54b"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -1008,
+        144
+      ],
+      "id": "d775f11a-a027-44cf-a133-ee6bb3a8504a",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "7koU8YyNnCbPDLOE",
+          "name": "OpenAi account 4"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": "nvidia/nemotron-nano-9b-v2:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -688,
+        144
+      ],
+      "id": "aff3e37e-cbcc-49eb-ae0d-bf374dbc742f",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "qSLdko3wI4DFcoMY",
+          "name": "OpenRouter account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Wikipedia": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2947c710-dad6-4c52-a2fa-226d7b5facef",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e3552c258da0afcd14cfe3071e7f310d76d67792b30c0a420920397f0f1e93fb"
+  },
+  "id": "4EZKkgTZaPsYeiUu",
+  "tags": []
+}
